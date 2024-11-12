@@ -15,6 +15,8 @@ CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 
 # Enable pretty print for JSON responses
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+
+
 @app.errorhandler(404)
 def not_found(error) -> str:
     """ Not found handler
