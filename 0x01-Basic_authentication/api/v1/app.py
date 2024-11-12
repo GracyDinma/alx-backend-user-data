@@ -2,6 +2,8 @@
 """
 Route module for the API
 """
+
+
 from os import getenv
 from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
@@ -19,6 +21,9 @@ AUTH_TYPE = os.getenv("AUTH_TYPE")
 if AUTH_TYPE == "auth":
     from api.v1.auth.auth import Auth
     auth = Auth()
+elif AUTH_TYPE == "basic_auth":
+    from api.v1.auth.basic_auth import BasicAuth
+    auth = BasicAuth()
 
 # Enable pretty print for JSON responses
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
