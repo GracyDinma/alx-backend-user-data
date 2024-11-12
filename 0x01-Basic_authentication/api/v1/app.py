@@ -13,6 +13,8 @@ app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 
+# Enable pretty print for JSON responses
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 @app.errorhandler(404)
 def not_found(error) -> str:
     """ Not found handler
@@ -25,6 +27,13 @@ def unauthorized_error(error) -> str:
     """ Handle 401 Unauthorized error with a JSON response.
     """
     return jsonify({"error": "Unauthorized"}), 401
+
+
+@app.errorhandler(403)
+def forbidden_error(error) -> str:
+    """ Handle 403 not allowing access to resource.
+    """
+    return jsonify({"error": "Forbidden"}), 403
 
 
 if __name__ == "__main__":
