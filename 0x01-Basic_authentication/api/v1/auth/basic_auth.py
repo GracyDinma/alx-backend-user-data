@@ -97,7 +97,7 @@ class BasicAuth(Auth):
             user_pwd(str): The user's password.
 
         Returns:
-            User: The User instance if credentials are valid.
+            User: The User instance if credentials are valid, otherwise None.
         """
 
         if user_email is None or not isinstance(user_email, str):
@@ -110,6 +110,7 @@ class BasicAuth(Auth):
         if not users or len(users) == 0:
             return None
 
+        """ Verify password."""
         user = users[0]
         if not user.is_valid_password(user_pwd):
             return None
