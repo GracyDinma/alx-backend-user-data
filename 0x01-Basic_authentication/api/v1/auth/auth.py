@@ -37,10 +37,13 @@ class Auth:
                 """ For paths ending with *, check if the path
                 start with the prefix."""
 
-                if path.startswith(excluded_paths[:-1]):
+                if path.startswith(excluded_path[:-1]):
                     return False
             elif path == excluded_path:
+                # If there's an exact match with the path, no auth
                 return False
+
+        # if no match is found, auth is required
         return True
 
     def authorization_header(self, request=None) -> str:
