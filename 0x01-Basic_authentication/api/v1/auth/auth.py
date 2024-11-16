@@ -31,12 +31,17 @@ class Auth:
         # Ensure trailing slashes are consistent for comparison
         path = path if path.endswith('/') else path + '/'
 
-        """
-        Returns:
-            False if the the path is in the excluded paths
-        """
-        return not any(excluded_paths == path for
-                       excluded_paths in excluded_paths)
+        # Allow * at the end of excluded paths.
+        for excluded_path in excluded_paths:
+            if excluded_path.endswith('*'):
+                """ For paths ending with *, check if the path
+                start with the prefix."""
+
+                if path.startswith(excluded_paths[:-1]):
+                    return False
+            elif path == excluded_path:
+                return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """
