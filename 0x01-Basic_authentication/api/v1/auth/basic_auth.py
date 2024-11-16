@@ -111,8 +111,39 @@ class BasicAuth(Auth):
             return None
 
         """ Verify password."""
-        user = users[0]
-        if not user.is_valid_password(user_pwd):
+        user_instance = users[0]
+        if not user_instance.is_valid_password(user_pwd):
+            return None
+        return user_instance
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """
+        Retrieves the User instance for a request.
+
+        Args:
+            Request.
+        Returns:
+            User instance.
+        """
+
+        auth_header = self.authorization_header(request)
+        if not auth_header:
             return None
 
-        return user
+        """ Decode the Base64 part of the header."""
+        base64_auth = self.extract_base64_authorization_header(auth_header)
+        if not base64_auth:
+            return None
+
+        """ Decode the Base64 string."""
+        decoded_auth = self.decode_base64_authorization_header(base64_auth)
+        if not decoded_auth:
+            return None
+
+        """ Extract user email and password."""
+        user_email, user_pwd = self.extract_user_credentials(decoded_auth)
+        if not user_email or not user_pwd:
+            return None
+
+        """ Retrieves and return the User instance."""
+        return self.user_object_from_credentials(user_email, user_pwd)
