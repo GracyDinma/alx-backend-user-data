@@ -3,7 +3,7 @@
 Auth class for API authentication.
 """
 
-
+import os
 from flask import request
 from typing import List, TypeVar
 
@@ -11,6 +11,27 @@ from typing import List, TypeVar
 class Auth:
     """ _summary_
     """
+
+    def session_cookie(self, request=None):
+        """
+        Update method that returns a cookie value from a request
+
+        Args:   request: Flask request object
+
+        Returns:
+            The value of the session cookie or None if not found
+        """
+        if request is None:
+            return None
+
+        # Get the name of the session cookie from env
+        session_name = os.getenv('SESSION_NAME')
+
+        if not session_name:
+            return None
+
+        # Return the value of the session cookie using .get()
+        return request.cookies.get(session_name)
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """
