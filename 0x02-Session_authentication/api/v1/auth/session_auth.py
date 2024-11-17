@@ -3,6 +3,7 @@
 This module defines the SessionAuth module.
 """
 
+import uuid
 from api.v1.auth.auth import Auth
 import base64
 import binascii
@@ -15,6 +16,30 @@ class SessionAuth(Auth):
     SessionAuth class inherits from Auth.
     This class is currently empty and serves as a placeholder for future.
     """
+
+    user_id_by_session_id = {}
+
+    def create_session(self, user_id: str = None) -> str:
+        """
+        Create an instance method that creates a session ID.
+
+        Args:
+            user_id (str): The user ID for which the session ID is created.
+
+        Returns:
+            str: The session ID if created successfully, otherwise None.
+        """
+        if user_id is None:
+            return None
+        if not isinstance(user_id, str):
+            return None
+
+        # Generating a new session Id
+        session_id = str(uuid.uuid4())
+
+        # Store the session ID with the associated user ID
+        self.user_id_by_session_id[session_id] = user_id
+        return session_id
 
     def extract_base64_authorization_header(self,
                                             authorization_header: str) -> str:
