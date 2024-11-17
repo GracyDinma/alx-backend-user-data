@@ -9,21 +9,25 @@ from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
+from api.v1.auth.basic_auth import BasicAuth
+from api.v1.auth.auth import Auth
+
+# Import SessionAuth
+from api.v1.auth.session_auth import SessionAuth
 
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+
 auth = None
 AUTH_TYPE = os.getenv("AUTH_TYPE")
 
 
-if AUTH_TYPE == "auth":
-    from api.v1.auth.auth import Auth
-    auth = Auth()
-elif AUTH_TYPE == "basic_auth":
-    from api.v1.auth.basic_auth import BasicAuth
+if AUTH_TYPE == "basic_auth":
     auth = BasicAuth()
+elif AUTH_TYPE == "session_auth":
+    auth = SessionAuth()
 
 # Enable pretty print for JSON responses
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True

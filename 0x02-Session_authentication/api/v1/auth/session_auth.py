@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-This module defines the BasicAuth module.
+This module defines the SessionAuth module.
 """
 
 from api.v1.auth.auth import Auth
@@ -10,9 +10,9 @@ from typing import TypeVar
 from models.user import User
 
 
-class BasicAuth(Auth):
+class SessionAuth(Auth):
     """
-    BasicAuth class inherits from Auth.
+    SessionAuth class inherits from Auth.
     This class is currently empty and serves as a placeholder for future.
     """
 
