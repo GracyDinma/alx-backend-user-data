@@ -5,8 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-
-from user import Base
+from user import Base, User
 
 
 class DB:
@@ -24,9 +23,9 @@ class DB:
             User: The newly created user object.
         """
         user = User(email=email, hashed_password=hashed_password)
-        self.session.add(user)
+        self._session.add(user)
         self._session.commit()
-        return User
+        return user
 
     def __init__(self) -> None:
         """Initialize a new DB instance
