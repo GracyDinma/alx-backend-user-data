@@ -12,6 +12,9 @@ class User(Base):
     """ Define number of mapped classes in class User.
     Args:
         User - A SQLAlchemy model.
+
+    Returns:
+        user boject of the database
     """
 
     __tablename__ = 'users'
