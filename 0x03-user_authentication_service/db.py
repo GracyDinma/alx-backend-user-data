@@ -41,7 +41,6 @@ class DB:
         Returns:
             User: The newly created user object.
         """
-        
         user = User(email=email, hashed_password=hashed_password)
         self._session.add(user)
         self._session.commit()
@@ -66,6 +65,6 @@ class DB:
 
             user = self._session.query(User).filter_by(**kwargs).first()
             if not user:
-                raise NoResultFound(f"No user found matching criteria: {kwars}")
+                raise NoResultFound(f"No user found matching criteria:
+                                    {kwars}")
             return user
-            
