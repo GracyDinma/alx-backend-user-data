@@ -65,8 +65,6 @@ class DB:
 
         user = self._session.query(User).filter_by(**kwargs).first()
         if not user:
-            raise NoResultFound(
-                f"No user found for criteria: {kwargs}"
-            )
+            raise NoResultFound("No user found for criteria: " + str(kwargs))
 
         return user
