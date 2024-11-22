@@ -41,33 +41,28 @@ class DB:
         Returns:
             User: The newly created user object.
         """
-        user = User(email=email, hashed_password=hashed_password)
-        self._session.add(user)
-        self._session.commit()
-        return user
+        try:
+            user = User(email=email, hashed_password=hashed_password)
+            self._session.add(user)
+            self._session.commit()
+            return user
+        except Exception as e:
+            self._session.rollback(
+                    raise RuntimeError(f"Error adding user: {e}") from e
 
     def find_user_by(self, **kwargs) -> User:
         """
-        Finds the first row in the users that matches the
-        provided keyword argument.
+        Finds the first row in the user by given attributes.
+        Args:
+            kwargs: Arbitrary keyword arguments.
+        Returns:
+            User: The found user object.
 
         Raises:
             NoResultFound: if no matching record is found.
             InvalidRequestError: If the query arguments are invalid.
-
-        Args:
-            kwargs - arbitrary keword argument
-
-        Returns:
-            User: The first matching user record.
         """
-        if not kwargs:
-            raise InvalidRequestError("No arguments provided for query")
 
-        try:
-            user = self._session.query(User).filter_by(**kwargs).one()
-            return user
-        except NoResultFound:
-            raise NoResultFound("No result found for the given query argument")
-        except Exception as e:
-            raise InvalidRequestError(f"Invalid query arguments: {e}")
+        for attr in kwargs.keys():
+            if not hasattr(User, attr):
+                raise InvalidRequestError(f"Invalid attribute: {attr}
