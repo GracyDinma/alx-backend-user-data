@@ -63,9 +63,10 @@ class DB:
             if not hasattr(User, attr):
                 raise InvalidRequestError(f"Invalid attribute: {attr}")
 
-            user = self._session.query(User).filter_by(**kwargs).first()
-            if not user:
-                raise NoResultFound(
-                    f"No user found matching criteria: {kwargs}"
-                )
-            return user
+        user = self._session.query(User).filter_by(**kwargs).first()
+        if not user:
+            raise NoResultFound(
+                f"No user found for criteria: {kwargs}"
+            )
+
+        return user
