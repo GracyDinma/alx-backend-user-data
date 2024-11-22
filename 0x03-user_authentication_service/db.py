@@ -41,14 +41,11 @@ class DB:
         Returns:
             User: The newly created user object.
         """
-        try:
-            user = User(email=email, hashed_password=hashed_password)
-            self._session.add(user)
-            self._session.commit()
-            return user
-        except Exception as e:
-            self._session.rollback(
-                    raise RuntimeError(f"Error adding user: {e}") from e
+        
+        user = User(email=email, hashed_password=hashed_password)
+        self._session.add(user)
+        self._session.commit()
+        return user
 
     def find_user_by(self, **kwargs) -> User:
         """
@@ -65,4 +62,10 @@ class DB:
 
         for attr in kwargs.keys():
             if not hasattr(User, attr):
-                raise InvalidRequestError(f"Invalid attribute: {attr}
+                raise InvalidRequestError(f"Invalid attribute: {attr}")
+
+            user = self._session.query(User).filter_by(**kwargs).first()
+            if not user:
+                raise NoResultFound(f"No user found matching criteria: {kwars}")
+            return user
+            
